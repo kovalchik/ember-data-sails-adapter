@@ -139,7 +139,10 @@ DS.SailsSocketAdapter = DS.SailsAdapter = DS.SailsRESTAdapter.extend({
       if (!record.id) {
         record.id = message.id;
       }
-      store.push(socketModel, record);
+      // Do not add updated items which are actually insertions to the store
+      if (!(message.verb === 'updated' && !message.previous)) {
+        store.push(socketModel, record);
+      }
     }
 
     function destroy(message) {
