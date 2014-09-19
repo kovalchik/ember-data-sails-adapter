@@ -74,12 +74,16 @@ DS.SailsSocketAdapter = DS.SailsAdapter = DS.SailsRESTAdapter.extend({
   },
 
   socket: function(url, method, data) {
-    var isErrorObject = this.isErrorObject.bind(this);
+    var isErrorObject = this.isErrorObject.bind(this),
+        adapter = this;
     method = method.toLowerCase();
-    var adapter = this;
+    if ((method === 'put' || method === 'post') && data.data) {
+      data = data.data;
+    }
     adapter._log(method, url, data);
-    if(method !== 'get')
+    if(method !== 'get') {
       this.checkCSRF(data);
+    }
     return new RSVP.Promise(function(resolve, reject) {
       io.socket[method](url, data, function (data) {
         if (isErrorObject(data)) {
@@ -89,6 +93,8 @@ DS.SailsSocketAdapter = DS.SailsAdapter = DS.SailsRESTAdapter.extend({
           } else {
             reject(data);
           }
+        } else if (data.statusCode === 200) {
+          resolve();
         } else {
           resolve(data);
         }
