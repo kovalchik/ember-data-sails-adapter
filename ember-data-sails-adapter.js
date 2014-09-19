@@ -125,11 +125,15 @@ DS.SailsSocketAdapter = DS.SailsAdapter = DS.SailsRESTAdapter.extend({
         message.data = obj;
       }
       var record = serializer.extractSingle(store, type, message.data);
-      // If the id is not present in the record, get it from the message
-      if (!record[socketModel].id) {
-        record[socketModel].id = message.id;
+      // If we're dealing with a standard Sails response, use the socketModel property
+      if (record[socketModel]) {
+        record = record[socketModel];
       }
-      store.push(socketModel, record[socketModel]);
+      // If the id is not present in the record, get it from the message
+      if (!record.id) {
+        record.id = message.id;
+      }
+      store.push(socketModel, record);
     }
 
     function destroy(message) {
