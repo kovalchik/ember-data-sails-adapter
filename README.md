@@ -5,7 +5,7 @@ An Ember Data adapter for Sails.js v0.10. If you are looking for Sails.js bluepr
 
 **Note:** If you like to use this adapter with Sails.js v0.9 please use the [1.x line](https://github.com/bmac/ember-data-sails-adapter#ember-data-sails-adapter-1x).
 
-This package contains 2 Adapters, `DS.SailsSocketAdapter` and `DS.SailsRESTAdapter`. 
+This package contains 2 Adapters, `DS.SailsSocketAdapter` and `DS.SailsRESTAdapter`.
 
 ```bash
 bower install ember-data-sails-adapter
@@ -59,6 +59,20 @@ App.ApplicationAdapter = DS.SailsRESTAdapter.example({
 You can enable pluralized routes in sails by going to
 `conifg/blueprints.js` and setting the `pluralize` variable to true.
 
+#### Blueprints
+
+By default, both adapters utilize the `JSONSerializer` rather than the
+`RESTSerializer`. If you would like to use the adapters with
+sails-ember-blueprints](https://github.com/mphasize/sails-ember-blueprints)
+you will need to set the defaultSerializer to '-rest'. Sockets do not currently
+work with request coalescing enabled.
+
+```javascript
+App.ApplicationAdapter = DS.SailsRESTAdapter.extend({
+    defaultSerializer: '-rest'
+});
+```
+
 ## SailsSocketAdapter Options
 The options below are for the SailsSocketAdapter. To see a list of options for the `SailsRESTAdapter` see the [RESTAdapter docs](http://emberjs.com/api/data/classes/DS.RESTAdapter.html).
 
@@ -84,11 +98,11 @@ Used to map lowercase model names that sails uses to model names that ember can 
 ember-data-sails-adapter 1.x
 ============================
 
-An Ember Data adapter for Sails.js v0.9. 
+An Ember Data adapter for Sails.js v0.9.
 - [latest release](https://github.com/bmac/ember-data-sails-adapter/releases/tag/1.0.0)
 - [github branch](https://github.com/bmac/ember-data-sails-adapter/tree/1.x-master).
 
-This package contains 2 Adapters, `DS.SailsSocketAdapter` and `DS.SailsRESTAdapter`. 
+This package contains 2 Adapters, `DS.SailsSocketAdapter` and `DS.SailsRESTAdapter`.
 
 ```bash
 bower install ember-data-sails-adapter#1.0.1
